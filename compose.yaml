@@ -1,0 +1,13 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=eventify'
+      - 'MYSQL_ROOT_PASSWORD=rootpassword'
+    ports:
+      - '3306:3306'
+    networks:
+      - eventify-network
+networks:
+  eventify-network:
+    driver: bridge
