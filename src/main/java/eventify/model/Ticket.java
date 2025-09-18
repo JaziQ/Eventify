@@ -37,9 +37,9 @@ public class Ticket {
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private TicketStatus status;
 
-    public enum Status {
+    public enum TicketStatus {
         AVAILABLE, SOLD, CANCELLED
     }
 
