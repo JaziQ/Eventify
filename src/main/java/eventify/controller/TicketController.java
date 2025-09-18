@@ -1,8 +1,11 @@
 package eventify.controller;
 
+import eventify.dto.TicketDTO;
+import eventify.mapper.Mapper;
 import eventify.model.Ticket;
 import eventify.service.TicketService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,43 +22,30 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    @GetMapping
-    public List<Ticket> getAllTickets() {
-        return ticketService.getTicketsByUserId(null); // при желании можно добавить метод для getAll
-    }
-
-    @GetMapping("/{id}")
-    public Ticket getTicketById(@PathVariable Long id) {
-        try {
-            return ticketService.getTicketsByUserId(id).stream()
-                    .filter(t -> t.getId().equals(id))
-                    .findFirst()
-                    .orElseThrow(EntityNotFoundException::new);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found");
-        }
-    }
-
     @GetMapping("/user/{userId}")
-    public List<Ticket> getTicketsByUserId(@PathVariable Long userId) {
-        return ticketService.getTicketsByUserId(userId);
+    public List<TicketDTO> getTicketsByUser(@PathVariable Long userId) {
+        return ticketService.getTicketsByUserId(userId).stream()
+                .map(Mapper::toTicketDTO)
+                .toList();
     }
 
     @GetMapping("/event/{eventId}")
-    public List<Ticket> getTicketsByEventId(@PathVariable Long eventId) {
-        return ticketService.getTicketsByEventId(eventId);
+    public List<TicketDTO> getTicketsByEvent(@PathVariable Long eventId) {
+        return ticketService.getTicketsByEventId(eventId).stream()
+                .map(Mapper::toTicketDTO)
+                .toList();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Ticket createTicket(@RequestBody Ticket ticket) {
-        return ticketService.save(ticket);
+    public TicketDTO createTicket(@Valid @RequestBody Ticket ticket) {
+        return Mapper.toTicketDTO(ticketService.save(ticket));
     }
 
     @PutMapping("/{id}")
-    public Ticket updateTicket(@PathVariable Long id, @RequestBody Ticket updatedTicket) {
+    public TicketDTO updateTicket(@PathVariable Long id, @Valid @RequestBody Ticket updatedTicket) {
         try {
-            return ticketService.updateTicket(id, updatedTicket);
+            return Mapper.toTicketDTO(ticketService.updateTicket(id, updatedTicket));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found");
         }

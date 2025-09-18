@@ -1,9 +1,11 @@
 package eventify.controller;
 
+import eventify.dto.EventDTO;
+import eventify.mapper.Mapper;
 import eventify.model.Event;
 import eventify.service.EventService;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,20 +18,21 @@ public class EventController {
 
     private final EventService eventService;
 
-    @Autowired
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
     @GetMapping
-    public List<Event> getAllEvents() {
-        return eventService.getAllEvents();
+    public List<EventDTO> getAllEvents() {
+        return eventService.getAllEvents().stream()
+                .map(Mapper::toEventDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Event getEventById(@PathVariable Long id) {
+    public EventDTO getEventById(@PathVariable Long id) {
         try {
-            return eventService.getEventById(id);
+            return Mapper.toEventDTO(eventService.getEventById(id));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
@@ -37,14 +40,14 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Event createEvent(@RequestBody Event event) {
-        return eventService.save(event);
+    public EventDTO createEvent(@Valid @RequestBody Event event) {
+        return Mapper.toEventDTO(eventService.save(event));
     }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable Long id, @RequestBody Event event) {
+    public EventDTO updateEvent(@PathVariable Long id, @Valid @RequestBody Event updatedEvent) {
         try {
-            return eventService.updateEvent(id, event);
+            return Mapper.toEventDTO(eventService.updateEvent(id, updatedEvent));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }

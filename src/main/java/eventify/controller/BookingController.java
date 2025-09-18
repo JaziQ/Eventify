@@ -1,8 +1,11 @@
 package eventify.controller;
 
+import eventify.dto.BookingDTO;
+import eventify.mapper.Mapper;
 import eventify.model.Booking;
 import eventify.service.BookingService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,34 +23,36 @@ public class BookingController {
     }
 
     @GetMapping
-    public List<Booking> getAllBookings() {
-        return bookingService.getAllBookings();
+    public List<BookingDTO> getAllBookings() {
+        return bookingService.getAllBookings().stream()
+                .map(Mapper::toBookingDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Booking getBookingById(@PathVariable Long id) {
+    public BookingDTO getBookingById(@PathVariable Long id) {
         return bookingService.getBookingById(id)
+                .map(Mapper::toBookingDTO)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
     }
 
     @GetMapping("/user/{userId}")
-    public List<Booking> getBookingsByUser(@PathVariable Long userId) {
-        return bookingService.getAllByUserId(userId);
+    public List<BookingDTO> getBookingsByUser(@PathVariable Long userId) {
+        return bookingService.getAllByUserId(userId).stream()
+                .map(Mapper::toBookingDTO)
+                .toList();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Booking createBooking(@RequestBody Booking booking) {
-        return bookingService.save(booking);
+    public BookingDTO createBooking(@Valid @RequestBody Booking booking) {
+        return Mapper.toBookingDTO(bookingService.save(booking));
     }
 
     @PutMapping("/{id}/status")
-    public Booking updateBookingStatus(
-            @PathVariable Long id,
-            @RequestParam Booking.BookingStatus status
-    ) {
+    public BookingDTO updateBookingStatus(@PathVariable Long id, @Valid @RequestParam Booking.BookingStatus status) {
         try {
-            return bookingService.updateBookingStatus(id, status);
+            return Mapper.toBookingDTO(bookingService.updateBookingStatus(id, status));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found");
         }

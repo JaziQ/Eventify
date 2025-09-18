@@ -1,8 +1,11 @@
 package eventify.controller;
 
+import eventify.dto.UserDTO;
+import eventify.mapper.Mapper;
 import eventify.model.User;
 import eventify.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,27 +21,27 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    public UserDTO getUserById(@PathVariable Long id) {
         try {
-            return userService.getUserById(id);
+            return Mapper.toUserDTO(userService.getUserById(id));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
     }
 
     @GetMapping("/email")
-    public User getUserByEmail(@RequestParam String email) {
+    public UserDTO getUserByEmail(@RequestParam String email) {
         try {
-            return userService.getUserByEmail(email);
+            return Mapper.toUserDTO(userService.getUserByEmail(email));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
     }
 
     @GetMapping("/username")
-    public User getUserByUsername(@RequestParam String username) {
+    public UserDTO getUserByUsername(@RequestParam String username) {
         try {
-            return userService.getUserByUsername(username);
+            return Mapper.toUserDTO(userService.getUserByUsername(username));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
@@ -46,20 +49,19 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User user) {
-        return userService.save(user);
+    public UserDTO createUser(@Valid @RequestBody User user) {
+        return Mapper.toUserDTO(userService.save(user));
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    public UserDTO updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
         try {
-            return userService.updateUser(id, updatedUser);
+            return Mapper.toUserDTO(userService.updateUser(id, updatedUser));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
     }
 
-    // DELETE пользователя
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {

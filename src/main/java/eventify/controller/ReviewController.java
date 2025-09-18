@@ -1,13 +1,17 @@
 package eventify.controller;
 
+import eventify.dto.ReviewDTO;
+import eventify.mapper.Mapper;
 import eventify.model.Review;
 import eventify.service.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {
@@ -19,34 +23,38 @@ public class ReviewController {
     }
 
     @GetMapping
-    public List<Review> getAllReviews() {
-        return reviewService.getAllReviews();
+    public List<ReviewDTO> getAllReviews() {
+        return reviewService.getAllReviews().stream()
+                .map(Mapper::toReviewDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Review getReviewById(@PathVariable Long id) {
+    public ReviewDTO getReviewById(@PathVariable Long id) {
         try {
-            return reviewService.getReviewById(id);
+            return Mapper.toReviewDTO(reviewService.getReviewById(id));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review not found");
         }
     }
 
     @GetMapping("/event/{eventId}")
-    public List<Review> getReviewsByEventId(@PathVariable Long eventId) {
-        return reviewService.getReviewsByEventId(eventId);
+    public List<ReviewDTO> getReviewsByEventId(@PathVariable Long eventId) {
+        return reviewService.getReviewsByEventId(eventId).stream()
+                .map(Mapper::toReviewDTO)
+                .toList();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Review createReview(@RequestBody Review review) {
-        return reviewService.save(review);
+    public ReviewDTO createReview(@Valid @RequestBody Review review) {
+        return Mapper.toReviewDTO(reviewService.save(review));
     }
 
     @PutMapping("/{id}")
-    public Review updateReview(@PathVariable Long id, @RequestBody Review updatedReview) {
+    public ReviewDTO updateReview(@PathVariable Long id, @Valid @RequestBody Review updatedReview) {
         try {
-            return reviewService.updateReview(id, updatedReview);
+            return Mapper.toReviewDTO(reviewService.updateReview(id, updatedReview));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review not found");
         }
@@ -54,7 +62,7 @@ public class ReviewController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteReviewById(@PathVariable Long id) {
+    public void deleteReview(@PathVariable Long id) {
         try {
             reviewService.deleteReview(id);
         } catch (EntityNotFoundException e) {
