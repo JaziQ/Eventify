@@ -32,8 +32,6 @@ public class UserDTO {
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
-
     @Past(message = "Birth date must be in the past")
     private LocalDateTime birthDate;
 }
