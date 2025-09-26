@@ -1,5 +1,6 @@
 package eventify.dto;
 
+import eventify.model.User;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -19,6 +20,17 @@ public class UserDTO {
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email cannot be blank")
     private String email;
+
+    @NotBlank(message = "Username is required")
+    private String username;
+
+    @Size(min = 6, message = "Password must be at least 6 characters long")
+    private String password;
+
+    @NotNull(message = "Role is required")
+    private User.Role role;
+
+    private LocalDateTime createdAt;
 
     @Past(message = "Birth date must be in the past")
     private LocalDateTime birthDate;

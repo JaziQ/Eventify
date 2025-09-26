@@ -5,9 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -30,7 +28,7 @@ public class Review {
 
     @CreationTimestamp
     @Column(updatable = false)
-    private Date reviewDate;
+    private LocalDateTime reviewDate;
 
     @Min(1)
     @Max(5)

@@ -1,5 +1,7 @@
 package eventify.service;
 
+import eventify.dto.UserDTO;
+import eventify.mapper.Mapper;
 import eventify.model.User;
 import eventify.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,39 +21,47 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
+    public UserDTO save(UserDTO userDTO) {
+        User user = Mapper.toUserEntity(userDTO);
+        return Mapper.toUserDTO(userRepository.save(user));
     }
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id = " + id));
+        return Mapper.toUserDTO(user);
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with Email = " + email));
+        return Mapper.toUserDTO(user);
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
+    public UserDTO getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with username = " + username));
+        return Mapper.toUserDTO(user);
     }
 
     @Transactional
-    public User updateUser(Long id, User updatedUser) {
-        User existingUser = getUserById(id);
-        existingUser.setFirstName(updatedUser.getFirstName());
-        existingUser.setLastName(updatedUser.getLastName());
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setBirthDate(updatedUser.getBirthDate());
+    public UserDTO updateUser(Long id, UserDTO updatedUserDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id = " + id));
+
+        existingUser.setFirstName(updatedUserDTO.getFirstName());
+        existingUser.setLastName(updatedUserDTO.getLastName());
+        existingUser.setEmail(updatedUserDTO.getEmail());
+        existingUser.setBirthDate(updatedUserDTO.getBirthDate());
         existingUser.setUpdatedAt(LocalDateTime.now());
-        return userRepository.save(existingUser);
+
+        return Mapper.toUserDTO(userRepository.save(existingUser));
     }
 
     @Transactional
     public void deleteUser(Long id) {
-        User existingUser = getUserById(id);
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id = " + id));
         userRepository.delete(existingUser);
     }
 }

@@ -50,7 +50,7 @@ public class BookingController {
     }
 
     @PutMapping("/{id}/status")
-    public BookingDTO updateBookingStatus(@PathVariable Long id, @Valid @RequestParam Booking.BookingStatus status) {
+    public BookingDTO updateBookingStatus(@PathVariable Long id, @RequestParam Booking.BookingStatus status) {
         try {
             return Mapper.toBookingDTO(bookingService.updateBookingStatus(id, status));
         } catch (EntityNotFoundException e) {
