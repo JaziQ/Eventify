@@ -15,8 +15,11 @@ public class BookingDTO {
     @NotNull(message = "Event ID is required")
     private Long eventId;
 
+    @NotNull
+    private Long ticketId;
+
+    private LocalDateTime bookingDate;
+
     @NotNull(message = "Booking status is required")
     private Booking.BookingStatus bookingStatus;
-
-    private LocalDateTime booking_date;
 }

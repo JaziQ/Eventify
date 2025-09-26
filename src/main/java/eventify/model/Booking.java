@@ -27,7 +27,7 @@ public class Booking {
     private Ticket ticket;
 
     @CreationTimestamp
-    private LocalDateTime booking_date;
+    private LocalDateTime bookingDate;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
