@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -50,7 +50,7 @@ class UserControllerTest {
         user.setEmail("john@example.com");
         user.setUsername("john");
         user.setPassword("password");
-        user.setBirthDate(LocalDateTime.of(1990,1,1,0,0));
+        user.setBirthDate(LocalDate.of(1990,1,1));
         user.setRole(User.Role.USER);
 
         userDTO = Mapper.toUserDTO(user);

@@ -9,9 +9,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Data
@@ -41,7 +43,7 @@ public class User implements UserDetails {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     private LocalDateTime updatedAt;
 
     @Override
