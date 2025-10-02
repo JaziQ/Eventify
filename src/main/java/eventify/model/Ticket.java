@@ -26,6 +26,9 @@ public class Ticket {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
+    @Column(nullable = false, unique = true)
+    private String uniqueCode;
+
     @Positive
     private BigDecimal price;
 
@@ -40,7 +43,7 @@ public class Ticket {
     private TicketStatus status;
 
     public enum TicketStatus {
-        AVAILABLE, SOLD, CANCELLED
+        SOLD, CANCELLED
     }
 
 }
