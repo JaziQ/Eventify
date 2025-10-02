@@ -15,6 +15,12 @@ public class BookingDTO {
     @NotNull(message = "Event ID is required")
     private Long eventId;
 
+    private EventDTO event;
+
+    private UserDTO user;
+
+    private TicketDTO ticket;
+
     @NotNull
     private Long ticketId;
 

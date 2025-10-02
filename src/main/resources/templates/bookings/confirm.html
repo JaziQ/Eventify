@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: header(title='Confirm Booking')}"></head>
+<body class="d-flex flex-column min-vh-100">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="flex-fill container mt-5" style="max-width: 600px;">
+    <h1 class="mb-4 text-center">Confirm Your Booking</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h3 class="card-title" th:text="${event.name}">Event Name</h3>
+
+            <p class="card-text">
+                <span th:text="${event.description}"></span>
+            </p>
+            <p class="card-text"><strong>Event start at:</strong>
+                <span th:text="${#temporals.format(event.startTime, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
+
+            <p class="card-text"><strong>End at:</strong>
+                <span th:text="${#temporals.format(event.endTime, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
+            <p class="card-text"><strong>Location:</strong>
+                <span th:text="${event.location}"></span>
+            </p>
+            <p class="card-text"><strong>Price:</strong> $
+                <span th:text="${event.price}"></span>
+            </p>
+        </div>
+    </div>
+
+    <form th:action="@{/bookings/confirm/{eventId}/submit(eventId=${event.id})}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <button type="submit" class="btn btn-success w-100">Confirm Booking</button>
+        <a th:href="@{/events}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+    </form>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

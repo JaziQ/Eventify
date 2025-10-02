@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: header(title='Booking Success')}"></head>
+<body class="d-flex flex-column min-vh-100">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="flex-fill container mt-5" style="max-width: 600px;">
+    <h1 class="text-center text-success">Booking Confirmed!</h1>
+    <p class="text-center">Your booking has been successfully created.</p>
+    <div class="text-center mt-4">
+        <a th:href="@{/events}" class="btn btn-primary">Back to Events</a>
+        <a th:href="@{/bookings}" class="btn btn-secondary">My Bookings</a>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

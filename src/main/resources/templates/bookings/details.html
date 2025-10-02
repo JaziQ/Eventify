@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: header(title='Booking Details')}"></head>
+<body class="d-flex flex-column min-vh-100">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="flex-fill container mt-5" style="max-width: 600px;">
+    <h1 class="mb-4 text-center">Booking Details</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <p><strong>Event:</strong> <span th:text="${booking.event.name}"></span></p>
+            <p><strong>Event description:</strong> <span th:text="${booking.event.description}"></span></p>
+            <p><strong>Ticket:</strong> <span th:text="${booking.ticket.uniqueCode}"></span></p>
+            <p><strong>Ticket Status:</strong> <span th:text="${booking.ticket.status}"></span></p>
+            <p><strong>Booking Date:</strong> <span th:text="${#temporals.format(booking.bookingDate,'yyyy-MM-dd HH:mm')}"></span></p>
+            <p><strong>Status:</strong> <span th:text="${booking.bookingStatus}"></span></p>
+        </div>
+    </div>
+
+    <a th:href="@{/bookings}" class="btn btn-secondary w-100 mt-2">Back to My Bookings</a>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -47,6 +47,11 @@ public class UserService implements UserDetailsService {
         return Mapper.toUserDTO(userRepository.save(user));
     }
 
+    public User getUserEntityByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with username = " + username));
+    }
+
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id = " + id));
