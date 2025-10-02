@@ -2,7 +2,10 @@ package eventify.controller;
 
 import eventify.mapper.Mapper;
 import eventify.model.Event;
+import eventify.model.User;
 import eventify.service.EventService;
+import eventify.service.TicketService;
+import eventify.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +13,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/events")
 public class EventPageController {
 
     private final EventService eventService;
+    private final TicketService ticketService;
+    private final UserService userService;
 
     @Autowired
-    public EventPageController(EventService eventService) {
+    public EventPageController(EventService eventService, TicketService ticketService, UserService userService) {
         this.eventService = eventService;
+        this.ticketService = ticketService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -31,13 +40,11 @@ public class EventPageController {
     }
 
     @GetMapping("/{id}")
-    public String eventById(@PathVariable Long id, Model model) {
-        try {
-            model.addAttribute("event", Mapper.toEventDTO(eventService.getEventById(id)));
-            return "events/details";
-        } catch (EntityNotFoundException e) {
-            return "redirect:/events?error=notfound";
-        }
+    public String getEventDetails(@PathVariable Long id, Model model) {
+        Event event = eventService.getEventById(id);
+        model.addAttribute("event", Mapper.toEventDTO(event));
+        model.addAttribute("remainingTickets", ticketService.getRemainingTickets(event));
+        return "events/details";
     }
 
     @GetMapping("/new")
@@ -78,6 +85,18 @@ public class EventPageController {
         try {
             eventService.deleteEvent(id);
             return "redirect:/events";
+        } catch (EntityNotFoundException e) {
+            return "redirect:/events?error=notfound";
+        }
+    }
+
+    @PostMapping("/{id}/book")
+    public String bookEvent(@PathVariable Long id, Principal principal) {
+        try {
+            Event event = eventService.getEventById(id);
+            User user = userService.getUserEntityByUsername(principal.getName());
+            ticketService.save(event, user);
+            return "redirect:/events/" + id + "?success=true";
         } catch (EntityNotFoundException e) {
             return "redirect:/events?error=notfound";
         }

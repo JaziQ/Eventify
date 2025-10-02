@@ -1,33 +1,36 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: header}"></head>
-<body class="d-flex flex-column min-vh-100">
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/header :: header}"></head>
+    <body class="d-flex flex-column min-vh-100">
 
-<div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<main class="flex-fill container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>All Events</h1>
-        <a class="btn btn-primary" href="/events/new">➕ Add new</a>
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
-        <div class="col" th:each="event : ${events}">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${event.name}">Event Name</h5>
-                    <p class="card-text" th:text="${event.description}">Event Description</p>
-                    <p class="card-text"><strong>Location:</strong> <span th:text="${event.location}"></span></p>
-                    <p class="card-text"><strong>Price:</strong> $<span th:text="${event.price}"></span></p>
-                    <p class="card-text"><strong>Capacity:</strong> <span th:text="${event.capacity}"></span></p>
-                    <a th:href="@{/events/{id}(id=${event.id})}" class="btn btn-primary mt-2">More details</a>
+    <main class="flex-fill container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>All Events</h1>
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                <a class="btn btn-primary" href="/events/new">➕ Add new</a>
+            </a>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+            <div class="col" th:each="event : ${events}">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${event.name}">Event Name</h5>
+                        <p class="card-text" th:text="${event.description}">Event Description</p>
+                        <p class="card-text"><strong>Location:</strong> <span th:text="${event.location}"></span></p>
+                        <p class="card-text"><strong>Price:</strong> $<span th:text="${event.price}"></span></p>
+                        <p class="card-text"><strong>Capacity:</strong> <span th:text="${event.capacity}"></span></p>
+
+                        <a th:href="@{/events/{id}(id=${event.id})}" class="btn btn-primary mt-2">More details</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</main>
+    </main>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
-</body>
-</html>
+    </body>
+    </html>
