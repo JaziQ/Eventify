@@ -1,4 +1,4 @@
-package eventify.controller;
+package eventify.pageControllers;
 
 import eventify.mapper.Mapper;
 import eventify.model.Event;

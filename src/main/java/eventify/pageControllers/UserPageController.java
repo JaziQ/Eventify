@@ -1,4 +1,4 @@
-package eventify.controller;
+package eventify.pageControllers;
 
 import eventify.dto.UserDTO;
 import eventify.model.User;

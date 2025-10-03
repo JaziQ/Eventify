@@ -1,4 +1,4 @@
-package eventify.controller;
+package eventify.restControllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eventify.dto.TicketDTO;
