@@ -46,4 +46,11 @@ public class Event {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Ticket> tickets = new java.util.ArrayList<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Booking> bookings = new java.util.ArrayList<>();
+
 }
