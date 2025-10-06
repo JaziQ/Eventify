@@ -58,7 +58,7 @@ public class AdminBookingPageController {
     public String editBookingForm(@PathVariable Long id, Model model) {
         Booking booking = bookingService.getBookingById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
-        model.addAttribute("booking", booking);
+        model.addAttribute("booking", Mapper.toBookingDTO(booking));
         return "admin/bookings/form";
     }
 
