@@ -1,4 +1,4 @@
-package eventify.controller;
+package eventify.restControllers;
 
 import eventify.dto.TicketDTO;
 import eventify.mapper.Mapper;

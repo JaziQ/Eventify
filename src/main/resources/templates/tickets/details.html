@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header(title=${ticket.event.name})}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="flex-fill container mt-5">
+    <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 700px;">
+        <div class="card-body p-4">
+            <h1 class="card-title mb-3 text-center fw-bold" th:text="'🎫 Ticket #' + ${ticket.id}">Ticket #123</h1>
+            <p class="text-muted text-center mb-4" th:text="'Status: ' + ${ticket.status}">Status: ACTIVE</p>
+
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>👤 User ID:</strong>
+                    <span th:text="${ticket.userId}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🎟️ Event:</strong>
+                    <span th:text="${ticket.event.name}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>💰 Price:</strong>
+                    <span>$<span th:text="${ticket.price}"></span></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🔑 Unique Code:</strong>
+                    <span th:text="${ticket.uniqueCode}"></span>
+                </li>
+            </ul>
+
+            <h2 class="h5 mb-3">Event Details</h2>
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>📍 Location:</strong>
+                    <span th:text="${ticket.event.location}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🕒 Start:</strong>
+                    <span th:text="${#temporals.format(ticket.event.startTime, 'yyyy-MM-dd HH:mm')}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🏁 End:</strong>
+                    <span th:text="${#temporals.format(ticket.event.endTime, 'yyyy-MM-dd HH:mm')}"></span>
+                </li>
+            </ul>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                <a th:href="@{/tickets}" class="btn btn-secondary rounded-pill shadow-sm px-4">
+                    ⬅️ Back to Tickets
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

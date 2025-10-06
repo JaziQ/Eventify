@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: header(title='My Tickets')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="flex-fill container mt-5">
+    <h1 class="mb-4 text-center">My Tickets</h1>
+
+    <div th:if="${tickets != null and !tickets.isEmpty()}" class="row g-4">
+        <div class="col-md-6 col-lg-4" th:each="ticket : ${tickets}">
+            <div class="card shadow-sm h-100 border-0 rounded-4">
+                <div class="card-body d-flex flex-column justify-content-between">
+
+                    <div>
+                        <h5 class="card-title mb-2" th:text="${ticket.event.name}">Event Name</h5>
+                        <p class="card-text text-muted mb-1">
+                            <strong>Date:</strong>
+                            <span th:text="${#temporals.format(ticket.event.startTime, 'yyyy-MM-dd HH:mm')}"></span>
+                        </p>
+                        <p class="card-text text-muted mb-1">
+                            <strong>Code:</strong>
+                            <span th:text="${ticket.uniqueCode}"></span>
+                        </p>
+                        <p class="card-text mb-1">
+                            <strong>Status:</strong>
+                            <span th:text="${ticket.status}"
+                                  th:class="${ticket.status == T(eventify.model.Ticket.TicketStatus).SOLD}
+                                  ? 'text-success fw-semibold' : 'text-danger fw-semibold' "></span>
+
+
+                        </p>
+                        <p class="card-text">
+                            <strong>Price:</strong>
+                            $<span th:text="${ticket.price}"></span>
+                        </p>
+                    </div>
+
+                    <div class="mt-3 text-end">
+                        <a th:href="@{/tickets/{id}(id=${ticket.id})}" class="btn btn-primary btn-sm px-3 rounded-pill">
+                            View
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${tickets == null or tickets.isEmpty()}" class="alert alert-info text-center shadow-sm mt-5">
+        No tickets found.
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

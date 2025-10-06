@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header(title=${event.name})}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="flex-fill container mt-5">
+    <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 700px;">
+        <div class="card-body p-4">
+            <h1 class="card-title mb-3 text-center fw-bold" th:text="${event.name}">Event Name</h1>
+            <p class="text-muted text-center mb-4" th:text="${event.description}">Event Description</p>
+
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>📍 Location:</strong>
+                    <span th:text="${event.location}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>💰 Price:</strong>
+                    <span>$<span th:text="${event.price}"></span></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>👥 Capacity:</strong>
+                    <span th:text="${event.capacity}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🕒 Start:</strong>
+                    <span th:text="${#temporals.format(event.startTime, 'yyyy-MM-dd HH:mm')}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🏁 End:</strong>
+                    <span th:text="${#temporals.format(event.endTime, 'yyyy-MM-dd HH:mm')}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🎟️ Remaining Tickets:</strong>
+                    <span class="fw-semibold" th:text="${remainingTickets}"></span>
+                </li>
+            </ul>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/events/{id}/edit(id=${event.id})}" class="btn btn-warning rounded-pill shadow-sm px-4">
+                        ✏️ Edit Event
+                    </a>
+                    <form th:action="@{/events/{id}/delete(id=${event.id})}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger rounded-pill shadow-sm px-4">
+                            🗑️ Delete
+                        </button>
+                    </form>
+                </div>
+
+                <div th:if="${#authorization.expression('isAuthenticated()') and !#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/bookings/confirm/{eventId}(eventId=${event.id})}"
+                       class="btn btn-success rounded-pill shadow-sm px-4"
+                       th:classappend="${remainingTickets == 0} ? 'disabled'">
+                        <span th:text="${remainingTickets == 0 ? 'Sold Out' : '✅ Book This Event'}"></span>
+                    </a>
+                </div>
+
+                <a th:href="@{/events}" class="btn btn-secondary rounded-pill shadow-sm px-4">
+                    ⬅️ Back to Events
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

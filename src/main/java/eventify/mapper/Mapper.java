@@ -35,21 +35,53 @@ public class Mapper {
         if (booking == null) return null;
         BookingDTO dto = new BookingDTO();
         dto.setId(booking.getId());
-        dto.setUserId(booking.getUser().getId());
-        dto.setEventId(booking.getEvent().getId());
+        dto.setUserId(booking.getUser() != null ? booking.getUser().getId() : null);
+        dto.setEventId(booking.getEvent() != null ? booking.getEvent().getId() : null);
+        dto.setTicketId(booking.getTicket() != null ? booking.getTicket().getId() : null);
         dto.setBookingStatus(booking.getBookingStatus());
         dto.setBookingDate(booking.getBookingDate());
+
+        dto.setUser(toUserDTO(booking.getUser()));
+        dto.setEvent(toEventDTO(booking.getEvent()));
+        dto.setTicket(toTicketDTO(booking.getTicket()));
+
         return dto;
     }
 
-    public static Booking toBookingEntity(BookingDTO dto, User user, Event event) {
+    public static Booking toBookingEntity(BookingDTO dto) {
         if (dto == null) return null;
+
         Booking booking = new Booking();
         booking.setId(dto.getId());
-        booking.setUser(user);
-        booking.setEvent(event);
         booking.setBookingStatus(dto.getBookingStatus());
         booking.setBookingDate(dto.getBookingDate());
+
+        if (dto.getUser() != null) {
+            booking.setUser(toUserEntity(dto.getUser()));
+        } else if (dto.getUserId() != null) {
+            User user = new User();
+            user.setId(dto.getUserId());
+            booking.setUser(user);
+        }
+
+        if (dto.getEvent() != null) {
+            booking.setEvent(toEventEntity(dto.getEvent()));
+        } else if (dto.getEventId() != null) {
+            Event event = new Event();
+            event.setId(dto.getEventId());
+            booking.setEvent(event);
+        }
+
+        if (dto.getTicket() != null) {
+            booking.setTicket(toTicketEntity(dto.getTicket(),
+                    booking.getUser(),
+                    booking.getEvent()));
+        } else if (dto.getTicketId() != null) {
+            Ticket ticket = new Ticket();
+            ticket.setId(dto.getTicketId());
+            booking.setTicket(ticket);
+        }
+
         return booking;
     }
 
@@ -111,6 +143,8 @@ public class Mapper {
         dto.setEventId(ticket.getEvent().getId());
         dto.setPrice(ticket.getPrice());
         dto.setStatus(ticket.getStatus());
+        dto.setUniqueCode(ticket.getUniqueCode());
+        dto.setEvent(toEventDTO(ticket.getEvent()));
         return dto;
     }
 
@@ -122,6 +156,7 @@ public class Mapper {
         ticket.setEvent(event);
         ticket.setPrice(dto.getPrice());
         ticket.setStatus(dto.getStatus());
+        ticket.setUniqueCode(dto.getUniqueCode());
         return ticket;
     }
 }

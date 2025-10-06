@@ -1,25 +1,22 @@
-package eventify.controller;
+package eventify.restControllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eventify.dto.UserDTO;
 import eventify.mapper.Mapper;
 import eventify.model.User;
 import eventify.service.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -50,7 +47,7 @@ class UserControllerTest {
         user.setEmail("john@example.com");
         user.setUsername("john");
         user.setPassword("password");
-        user.setBirthDate(LocalDateTime.of(1990,1,1,0,0));
+        user.setBirthDate(LocalDate.of(1990,1,1));
         user.setRole(User.Role.USER);
 
         userDTO = Mapper.toUserDTO(user);

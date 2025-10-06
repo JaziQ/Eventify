@@ -25,7 +25,8 @@ public class EventService {
     }
 
     public Event getEventById(Long id) {
-        return eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found"));    }
+        return eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+    }
 
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();

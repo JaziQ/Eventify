@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: header(title='Booking Already Exists')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="flex-fill container mt-5 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card shadow-sm border-0 rounded-4 text-center p-4" style="max-width: 500px;">
+        <div class="card-body">
+            <h1 class="display-5 text-warning mb-3">⚠️ Already Booked!</h1>
+            <p class="lead mb-4">
+                You have already booked this event. You cannot book the same event twice.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a th:href="@{/events}" class="btn btn-primary rounded-pill shadow-sm px-4 py-2">
+                    ⬅️ Back to Events
+                </a>
+                <a th:href="@{/bookings}" class="btn btn-secondary rounded-pill shadow-sm px-4 py-2">
+                    My Bookings
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

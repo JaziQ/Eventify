@@ -1,4 +1,4 @@
-package eventify.controller;
+package eventify.restControllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eventify.dto.TicketDTO;
@@ -54,7 +54,7 @@ class TicketControllerTest {
         ticket.setUser(user);
         ticket.setEvent(event);
         ticket.setPrice(BigDecimal.valueOf(100));
-        ticket.setStatus(Ticket.TicketStatus.AVAILABLE);
+        ticket.setStatus(Ticket.TicketStatus.CANCELLED);
 
         ticketDTO = Mapper.toTicketDTO(ticket);
     }

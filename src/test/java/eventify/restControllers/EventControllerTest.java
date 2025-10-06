@@ -1,11 +1,10 @@
-package eventify.controller;
+package eventify.restControllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eventify.dto.EventDTO;
 import eventify.mapper.Mapper;
 import eventify.model.Event;
 import eventify.service.EventService;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
