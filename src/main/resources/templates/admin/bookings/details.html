@@ -1,26 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/header :: header(title='Booking Details')}"></head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100 bg-light">
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<main class="flex-fill container mt-5" style="max-width: 600px;">
-    <h1 class="mb-4 text-center">Booking Details</h1>
+<main class="flex-fill container mt-5">
+    <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 700px;">
+        <div class="card-body p-4">
+            <h1 class="card-title mb-3 text-center fw-bold">Booking Details</h1>
 
-    <div class="card mb-3">
-        <div class="card-body">
-            <p><strong>Event:</strong> <span th:text="${booking.event.name}"></span></p>
-            <p><strong>Event description:</strong> <span th:text="${booking.event.description}"></span></p>
-            <p><strong>Ticket:</strong> <span th:text="${booking.ticket.uniqueCode}"></span></p>
-            <p><strong>Ticket Status:</strong> <span th:text="${booking.ticket.status}"></span></p>
-            <p><strong>Ticket Price:</strong> <span th:text="${booking.ticket.price}"></span></p>
-            <p><strong>Booking Date:</strong> <span th:text="${#temporals.format(booking.bookingDate,'yyyy-MM-dd HH:mm')}"></span></p>
-            <p><strong>Status:</strong> <span th:text="${booking.bookingStatus}"></span></p>
+            <h2 class="h5 mb-3">Event Details</h2>
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>📍 Event:</strong>
+                    <span th:text="${booking.event.name}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>📝 Description:</strong>
+                    <span th:text="${booking.event.description}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>📍 Location:</strong>
+                    <span th:text="${booking.event.location}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🕒 Start:</strong>
+                    <span th:text="${#temporals.format(booking.event.startTime, 'yyyy-MM-dd HH:mm')}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🏁 End:</strong>
+                    <span th:text="${#temporals.format(booking.event.endTime, 'yyyy-MM-dd HH:mm')}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>✅ Booking Status:</strong>
+                    <span th:text="${booking.bookingStatus}"></span>
+                </li>
+            </ul>
+
+            <h2 class="h5 mb-3">Ticket Details</h2>
+
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🎫 Ticket:</strong>
+                    <span th:text="${booking.ticket.uniqueCode}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>🟢 Ticket Status:</strong>
+                    <span th:text="${booking.ticket.status}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>📅 Booking Date:</strong>
+                    <span th:text="${#temporals.format(booking.bookingDate,'yyyy-MM-dd HH:mm')}"></span>
+                </li>
+
+            </ul>
+
+
+            <div class="text-center mt-4">
+                <a th:href="@{/admin/bookings}" class="btn btn-secondary rounded-pill shadow-sm px-5">
+                    ⬅️ Back to My Bookings
+                </a>
+            </div>
         </div>
     </div>
-
-    <a th:href="@{/admin/bookings}" class="btn btn-secondary w-100 mt-2">Back to all Bookings</a>
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>

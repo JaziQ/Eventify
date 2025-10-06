@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/}">Eventify</a>
+        <a class="navbar-brand fw-bold fs-4 d-flex align-items-center gap-2" th:href="@{/}">
+            🎟️ <span>Eventify</span>
+        </a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -12,43 +15,55 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/events}">Events</a>
+                    <a class="nav-link fw-semibold" th:href="@{/events}">Events</a>
                 </li>
+
                 <li class="nav-item" th:if="${!#authorization.expression('hasRole(''ADMIN'')')}">
-                    <a class="nav-link" th:href="@{/bookings}">Bookings</a>
+                    <a class="nav-link fw-semibold" th:href="@{/bookings}">Bookings</a>
                 </li>
+
                 <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                    <a class="nav-link" th:href="@{/admin/bookings}">Bookings</a>
+                    <a class="nav-link fw-semibold" th:href="@{/admin/bookings}">Admin Bookings</a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/tickets}">Tickets</a>
+                    <a class="nav-link fw-semibold" th:href="@{/tickets}">Tickets</a>
                 </li>
             </ul>
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-
-                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
-                    <a class="nav-link" th:href="@{/users/{username}(username=${#authentication.name})}">
-                        <strong th:text="${#authentication.name}">User</strong>
+                <li class="nav-item me-2" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link text-light d-flex align-items-center gap-1"
+                       th:href="@{/users/{username}(username=${#authentication.name})}">
+                        👤 <strong th:text="${#authentication.name}">User</strong>
                     </a>
                 </li>
 
                 <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
                     <form th:action="@{/logout}" method="post" class="d-inline">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <button type="submit" class="btn btn-link nav-link" style="padding:0;">Logout</button>
+                        <button type="submit" class="btn btn-outline-light btn-sm rounded-pill px-3">
+                            Logout
+                        </button>
                     </form>
                 </li>
 
                 <li class="nav-item" th:if="${#authorization.expression('!isAuthenticated()')}">
-                    <a class="nav-link" th:href="@{/users/login}">Login</a>
+                    <a class="btn btn-outline-light btn-sm rounded-pill me-2 px-3" th:href="@{/users/login}">Login</a>
                 </li>
                 <li class="nav-item" th:if="${#authorization.expression('!isAuthenticated()')}">
-                    <a class="nav-link" th:href="@{/users/signup}">Sign up</a>
+                    <a class="btn btn-light btn-sm rounded-pill text-primary px-3" th:href="@{/users/signup}">Sign up</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<style>
+    .navbar-nav .nav-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+</style>
 </body>
 </html>

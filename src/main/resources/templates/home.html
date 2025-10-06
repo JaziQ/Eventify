@@ -3,45 +3,50 @@
 <head th:replace="~{fragments/header :: header(title='Home')}"></head>
 <body class="d-flex flex-column min-vh-100">
 
-<!-- Navbar -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<main class="flex-fill container mt-4">
-    <h1>Welcome to Eventify</h1>
-    <p>This is the home page.</p>
+<main class="flex-fill container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Welcome to <span class="text-primary">Eventify</span></h1>
+        <p class="text-muted fs-5">Your one-stop platform for discovering and booking amazing events 🎉</p>
+    </div>
 
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Events</h5>
-                    <p class="card-text">Browse upcoming events.</p>
-                    <a th:href="@{/events}" class="btn btn-primary">Go</a>
+    <div class="row g-4 justify-content-center">
+        <div class="col-sm-10 col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 hover-shadow transition">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-primary fs-2">📅</div>
+                    <h5 class="card-title fw-semibold">Events</h5>
+                    <p class="card-text text-muted">Browse and explore upcoming events near you.</p>
+                    <a th:href="@{/events}" class="btn btn-outline-primary px-4 rounded-pill">View Events</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Bookings</h5>
-                    <p class="card-text">Check your bookings.</p>
+
+        <div class="col-sm-10 col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 hover-shadow transition">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-success fs-2">🧾</div>
+                    <h5 class="card-title fw-semibold">Bookings</h5>
+                    <p class="card-text text-muted">Check and manage your current event bookings.</p>
 
                     <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                        <a th:href="@{admin/bookings}" class="btn btn-primary btn-block">Go</a>
+                        <a th:href="@{/admin/bookings}" class="btn btn-outline-success px-4 rounded-pill">Admin Panel</a>
                     </div>
-
                     <div th:if="${!#authorization.expression('hasRole(''ADMIN'')')}">
-                        <a th:href="@{/bookings}" class="btn btn-primary btn-block">Go</a>
+                        <a th:href="@{/bookings}" class="btn btn-outline-success px-4 rounded-pill">My Bookings</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Tickets</h5>
-                    <p class="card-text">View your tickets.</p>
-                    <a th:href="@{/tickets}" class="btn btn-primary">Go</a>
+
+        <div class="col-sm-10 col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 hover-shadow transition">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-warning fs-2">🎟️</div>
+                    <h5 class="card-title fw-semibold">Tickets</h5>
+                    <p class="card-text text-muted">View and manage your purchased tickets securely.</p>
+                    <a th:href="@{/tickets}" class="btn btn-outline-warning px-4 rounded-pill">View Tickets</a>
                 </div>
             </div>
         </div>
@@ -49,6 +54,16 @@
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<style>
+    .hover-shadow:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+        transform: translateY(-3px);
+    }
+    .transition {
+        transition: all 0.2s ease-in-out;
+    }
+</style>
 
 </body>
 </html>
