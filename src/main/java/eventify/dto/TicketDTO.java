@@ -27,4 +27,6 @@ public class TicketDTO {
 
     @NotNull(message = "Ticket status is required")
     private Ticket.TicketStatus status;
+
+    private EventDTO event;
 }

@@ -144,6 +144,7 @@ public class Mapper {
         dto.setPrice(ticket.getPrice());
         dto.setStatus(ticket.getStatus());
         dto.setUniqueCode(ticket.getUniqueCode());
+        dto.setEvent(toEventDTO(ticket.getEvent()));
         return dto;
     }
 

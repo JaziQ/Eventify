@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -34,6 +33,10 @@ public class TicketService {
 
     public List<Ticket> getTicketsByEventId(Long eventId) {
         return ticketRepository.findAllByEventId(eventId);
+    }
+
+    public List<Ticket> getTicketsByUser(User user) {
+        return ticketRepository.findAllByUser(user);
     }
 
     public Ticket save(Event event, User user) {
@@ -85,7 +88,8 @@ public class TicketService {
         ticketRepository.delete(ticket);
     }
 
-    public Optional<Ticket> getTicketById(Long ticketId) {
-        return ticketRepository.findTicketById(ticketId);
+    public Ticket getTicketById(Long ticketId) {
+        return ticketRepository.findTicketById(ticketId)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket not found"));
     }
 }

@@ -15,4 +15,6 @@ public interface TicketRepository extends CrudRepository<Ticket, Long> {
     int countByEventAndStatus(Event event, Ticket.TicketStatus status);
 
     Optional<Ticket> findTicketById(Long ticketId);
+
+    List<Ticket> findAllByUser(User user);
 }

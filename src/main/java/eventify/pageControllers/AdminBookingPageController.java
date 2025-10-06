@@ -89,8 +89,7 @@ public class AdminBookingPageController {
     @PostMapping("/tickets/{id}/toggle-status")
     public String toggleTicketStatus(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            Ticket ticket = ticketService.getTicketById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Ticket not found"));
+            Ticket ticket = ticketService.getTicketById(id);
 
             if (ticket.getStatus() == Ticket.TicketStatus.SOLD) {
                 ticketService.updateTicketStatus(id, Ticket.TicketStatus.CANCELLED);
