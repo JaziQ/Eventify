@@ -14,7 +14,7 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/events}">Events</a>
                 </li>
-                <li class="nav-item" th:if="${#authorization.expression('hasRole(''USER'')')}">
+                <li class="nav-item" th:if="${!#authorization.expression('hasRole(''ADMIN'')')}">
                     <a class="nav-link" th:href="@{/bookings}">Bookings</a>
                 </li>
                 <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">

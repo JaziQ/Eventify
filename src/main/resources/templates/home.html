@@ -25,7 +25,14 @@
                 <div class="card-body">
                     <h5 class="card-title">Bookings</h5>
                     <p class="card-text">Check your bookings.</p>
-                    <a th:href="@{/bookings}" class="btn btn-primary">Go</a>
+
+                    <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                        <a th:href="@{admin/bookings}" class="btn btn-primary btn-block">Go</a>
+                    </div>
+
+                    <div th:if="${!#authorization.expression('hasRole(''ADMIN'')')}">
+                        <a th:href="@{/bookings}" class="btn btn-primary btn-block">Go</a>
+                    </div>
                 </div>
             </div>
         </div>
