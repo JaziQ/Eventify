@@ -1,5 +1,6 @@
 package eventify.pageControllers;
 
+import eventify.mapper.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import eventify.model.Booking;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.security.Principal;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -33,11 +36,28 @@ public class AdminBookingPageController {
         return "admin/bookings/list";
     }
 
+    @GetMapping("/{id}")
+    public String viewBooking(@PathVariable Long id, Model model, Principal principal) {
+        try {
+            Optional<Booking> bookingOptional = bookingService.getBookingById(id);
+            if(bookingOptional.isEmpty()) {
+                model.addAttribute("error", "Booking not found");
+                return "error";
+            }
+
+            Booking booking = bookingOptional.get();
+            model.addAttribute("booking", Mapper.toBookingDTO(booking));
+            return "admin/bookings/details";
+        }catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
+    }
+
     @GetMapping("/{id}/edit")
     public String editBookingForm(@PathVariable Long id, Model model) {
         Booking booking = bookingService.getBookingById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
-        log.info("booking Date {}", booking.getBookingDate());
         model.addAttribute("booking", booking);
         return "admin/bookings/form";
     }
@@ -47,7 +67,6 @@ public class AdminBookingPageController {
                                 @ModelAttribute Booking bookingDetails,
                                 RedirectAttributes redirectAttributes) {
         try {
-            log.info("booking Date {}", bookingDetails.getBookingDate());
             bookingService.updateBooking(id, bookingDetails);
             redirectAttributes.addFlashAttribute("success", "Booking updated successfully!");
         } catch (EntityNotFoundException e) {

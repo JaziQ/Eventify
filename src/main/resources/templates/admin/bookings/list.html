@@ -41,8 +41,7 @@
                 </td>
                 <td th:text="${#temporals.format(booking.bookingDate, 'yyyy-MM-dd HH:mm')}"></td>
                 <td>
-                <!--TODO: Короче сюда вьебенить едит типо тачки там взрывы ну ты понял                  -->
-                    <a th:href="@{/bookings/{id}(id=${booking.id})}" class="btn btn-info btn-sm">View</a>
+                    <a th:href="@{/admin/bookings/{id}(id=${booking.id})}" class="btn btn-info btn-sm">View</a>
 
                     <a th:href="@{/admin/bookings/{id}/edit(id=${booking.id})}" class="btn btn-sm btn-warning">Edit</a>
 
