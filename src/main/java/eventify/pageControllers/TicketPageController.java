@@ -5,6 +5,7 @@ import eventify.model.Ticket;
 import eventify.model.User;
 import eventify.service.TicketService;
 import eventify.service.UserService;
+import eventify.util.QRCodeGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,10 @@ public class TicketPageController {
     @GetMapping("/{id}")
     public String getTicketDetails(@PathVariable Long id, Model model) {
         Ticket ticket = ticketService.getTicketById(id);
+        String qrCode = QRCodeGenerator.generateQRCodeBase64(ticket.getUniqueCode(), 200, 200);
 
         model.addAttribute("ticket", Mapper.toTicketDTO(ticket));
+        model.addAttribute("qrCode", qrCode);
         return "tickets/details";
     }
 
