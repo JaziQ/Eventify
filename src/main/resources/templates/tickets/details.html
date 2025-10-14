@@ -7,9 +7,9 @@
 
 <main class="flex-fill container mt-5">
     <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 700px;">
-        <div class="card-body p-4">
-            <h1 class="card-title mb-3 text-center fw-bold" th:text="'🎫 Ticket #' + ${ticket.id}">Ticket #123</h1>
-            <p class="text-muted text-center mb-4" th:text="'Status: ' + ${ticket.status}">Status: ACTIVE</p>
+        <div class="card-body p-4 text-center">
+            <h1 class="card-title mb-3 fw-bold" th:text="'🎫 Ticket #' + ${ticket.id}">Ticket #123</h1>
+            <p class="text-muted mb-4" th:text="'Status: ' + ${ticket.status}">Status: ACTIVE</p>
 
             <ul class="list-group list-group-flush mb-4">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -46,6 +46,10 @@
                 </li>
             </ul>
 
+            <h4 class="mb-3">📱 QR Code</h4>
+            <img th:src="${qrCode}" alt="QR Code"
+                 class="img-fluid border rounded shadow-sm mb-3 p-2"
+                 style="max-width: 250px; background:white;"/>
             <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
                 <a th:href="@{/tickets}" class="btn btn-secondary rounded-pill shadow-sm px-4">
                     ⬅️ Back to Tickets
